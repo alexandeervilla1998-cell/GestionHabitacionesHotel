@@ -1,0 +1,119 @@
+@extends('layouts.app')
+
+@section('title', 'Editar reserva')
+
+@section('content')
+@include('partials.page-header', [
+    'pageTitle' => 'Editar reserva',
+    'pageSubtitle' => 'Modifica los datos de la reserva #' . $reserva->id,
+])
+
+<div class="hotel-card max-w-4xl animate-hotel-scale p-8">
+    <form action="{{ route('reservas.update', $reserva->id) }}" method="POST" id="form-reserva" class="space-y-6">
+        @csrf
+        @method('PUT')
+
+        <div class="grid gap-5 md:grid-cols-2">
+            <div>
+                <label class="hotel-label" for="usuario_id">Cliente</label>
+                <select name="usuario_id" id="usuario_id" class="hotel-select" required>
+                    @foreach($usuarios as $usuario)
+                        <option value="{{ $usuario->id }}" @selected($usuario->id == $reserva->usuario_id)>
+                            {{ $usuario->nombre }} ({{ $usuario->correo }})
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
+                <label class="hotel-label" for="habitacion_id">Habitación</label>
+                <select name="habitacion_id" id="habitacion_id" class="hotel-select" required>
+                    @foreach($habitaciones as $habitacion)
+                        <option value="{{ $habitacion->id }}" data-precio="{{ $habitacion->precio_por_noche }}" @selected($detalle && $detalle->habitacion_id == $habitacion->id)>
+                            {{ $habitacion->numero }} — {{ $habitacion->tipo }} (${{ number_format((float) $habitacion->precio_por_noche, 2) }}/noche)
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <div class="grid gap-5 md:grid-cols-3">
+            <div>
+                <label class="hotel-label" for="fecha_entrada">Fecha de entrada</label>
+                <input type="date" name="fecha_entrada" id="fecha_entrada" value="{{ old('fecha_entrada', optional($reserva->fecha_entrada)->format('Y-m-d')) }}" class="hotel-input" required>
+            </div>
+
+            <div>
+                <label class="hotel-label" for="fecha_salida">Fecha de salida</label>
+                <input type="date" name="fecha_salida" id="fecha_salida" value="{{ old('fecha_salida', optional($reserva->fecha_salida)->format('Y-m-d')) }}" class="hotel-input" required>
+            </div>
+
+            <div>
+                <label class="hotel-label" for="estado">Estado</label>
+                <select name="estado" id="estado" class="hotel-select" required>
+                    @foreach(['pendiente', 'confirmada', 'cancelada', 'completada'] as $est)
+                        <option value="{{ $est }}" @selected($reserva->estado === $est)>
+                            {{ ucfirst($est) }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <div class="border border-gray-200 bg-gray-50 px-4 py-3 text-xs text-gray-500">
+            <span id="fechas-estado" class="block font-semibold"></span>
+            Nota: Si la reserva está confirmada o completada, las fechas no se podrán editar desde el controlador.
+        </div>
+
+        <hr class="border-gray-200">
+
+        @include('reservas.partials.form-servicios', [
+            'serviciosReserva' => ($serviciosReserva ?? collect())->map(fn ($s) => [
+                'servicio_id' => $s['servicio_id'],
+                'precio' => $s['precio'],
+                'cantidad' => $s['cantidad'],
+            ])->values(),
+        ])
+
+        <div class="flex flex-wrap gap-3 pt-4">
+            <button type="submit" class="hotel-btn-primary">
+                <i data-lucide="save"></i>
+                Guardar cambios
+            </button>
+            <a href="{{ route('reservas.index') }}" class="hotel-btn-ghost">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+@push('scripts')
+<script>
+(function () {
+    const entrada = document.getElementById('fecha_entrada');
+    const salida = document.getElementById('fecha_salida');
+    const estado = document.getElementById('fechas-estado');
+
+    function validarFechas() {
+        if (!entrada.value || !salida.value) {
+            estado.textContent = 'Ingrese fechas para calcular la estadía.';
+            estado.className = 'block font-semibold text-gray-600';
+            return;
+        }
+        const e = new Date(entrada.value + 'T00:00:00');
+        const s = new Date(salida.value + 'T00:00:00');
+        const noches = Math.round((s - e) / (1000 * 60 * 60 * 24));
+        if (noches < 1) {
+            estado.textContent = 'Error: La fecha de salida debe ser posterior a la fecha de entrada.';
+            estado.className = 'block font-semibold text-red-700';
+        } else {
+            estado.textContent = 'Estadía: ' + noches + ' noche(s) calculada(s).';
+            estado.className = 'block font-semibold text-emerald-700';
+        }
+    }
+
+    entrada.addEventListener('change', validarFechas);
+    salida.addEventListener('change', validarFechas);
+    validarFechas();
+})();
+</script>
+@endpush
+@endsection
