@@ -32,7 +32,7 @@
                     <td class="font-mono text-gray-500 font-semibold">#{{ $factura->id }}</td>
                     <td class="font-bold text-hotel-dark font-mono">{{ $factura->numero_factura }}</td>
                     <td class="font-semibold text-gray-700 font-mono">#{{ $factura->reserva_id }}</td>
-                    <td>{{ $factura->reserva?->usuario?->nombre ?? 'N/A' }}</td>
+                    <td>{{ $factura->reserva?->cliente?->nombre ?? 'N/A' }}</td>
                     <td class="font-mono">${{ number_format((float) $factura->subtotal, 2) }}</td>
                     <td class="font-mono">${{ number_format((float) $factura->impuestos, 2) }}</td>
                     <td class="font-bold text-hotel-dark font-mono">${{ number_format((float) $factura->total, 2) }}</td>

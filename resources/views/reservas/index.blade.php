@@ -27,7 +27,7 @@
                 @forelse($reservas as $reserva)
                     <tr x-show="expanded || {{ $loop->index }} < limit" x-transition>
                         <td class="font-mono text-gray-500">#{{ $reserva->id }}</td>
-                        <td class="font-semibold text-gray-900">{{ $reserva->usuario?->nombre }}</td>
+                        <td class="font-semibold text-gray-900">{{ $reserva->cliente?->nombre }}</td>
                         <td>{{ optional($reserva->fecha_entrada)->format('d/m/Y') }}</td>
                         <td>{{ optional($reserva->fecha_salida)->format('d/m/Y') }}</td>
                         <td>

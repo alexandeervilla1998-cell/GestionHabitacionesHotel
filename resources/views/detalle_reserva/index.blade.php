@@ -26,7 +26,7 @@
                 <tr>
                     <td class="font-mono text-gray-500">#{{ $detalle->id }}</td>
                     <td class="font-semibold text-hotel-dark font-mono">#{{ $detalle->reserva_id }}</td>
-                    <td>{{ $detalle->reserva?->usuario?->nombre ?? 'N/A' }}</td>
+                    <td>{{ $detalle->reserva?->cliente?->nombre ?? 'N/A' }}</td>
                     <td>
                         <span class="font-semibold text-gray-900">{{ $detalle->habitacion?->numero ?? 'N/A' }}</span>
                         @if($detalle->habitacion)

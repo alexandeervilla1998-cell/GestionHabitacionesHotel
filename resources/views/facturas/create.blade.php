@@ -26,7 +26,7 @@
                 @foreach($reservas as $reserva)
                     <option value="{{ $reserva->id }}"
                         data-subtotal="{{ $reserva->subtotal_habitaciones + $reserva->subtotal_servicios }}">
-                        Reserva #{{ $reserva->id }} — {{ $reserva->usuario->nombre }}
+                        Reserva #{{ $reserva->id }} — {{ $reserva->cliente->nombre }}
                         ({{ $reserva->fecha_entrada->format('d/m/Y') }} al {{ $reserva->fecha_salida->format('d/m/Y') }})
                         — ${{ number_format($reserva->subtotal_habitaciones + $reserva->subtotal_servicios, 2) }}
                     </option>

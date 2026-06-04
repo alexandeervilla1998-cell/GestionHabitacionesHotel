@@ -15,11 +15,11 @@
 
         <div class="grid gap-5 md:grid-cols-2">
             <div>
-                <label class="hotel-label" for="usuario_id">Cliente</label>
-                <select name="usuario_id" id="usuario_id" class="hotel-select" required>
-                    @foreach($usuarios as $usuario)
-                        <option value="{{ $usuario->id }}" @selected($usuario->id == $reserva->usuario_id)>
-                            {{ $usuario->nombre }} ({{ $usuario->correo }})
+                <label class="hotel-label" for="cliente_id">Cliente</label>
+                <select name="cliente_id" id="cliente_id" class="hotel-select" required>
+                    @foreach($clientes as $cliente)
+                        <option value="{{ $cliente->id }}" @selected($cliente->id == $reserva->cliente_id)>
+                            {{ $cliente->nombre }} ({{ $cliente->correo }})
                         </option>
                     @endforeach
                 </select>

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cliente;
 use App\Models\Factura;
 use App\Models\Habitacion;
 use App\Models\Reserva;
 use App\Models\Pago;
-use App\Models\Usuario;
 use Illuminate\Support\Facades\DB;
 
 class MetricasController extends Controller
@@ -25,7 +25,7 @@ class MetricasController extends Controller
             ? round(($habitacionesOcupadas / $totalHabitaciones) * 100, 1)
             : 0;
 
-        $totalClientes        = Usuario::where('rol', 'cliente')->where('activo', true)->count();
+        $totalClientes        = Cliente::where('activo', true)->count();
 
         $ingresosTotales    = Factura::sum('total');
         $ingresosRecaudados = Pago::where('estado_pago', 'completado')->sum('monto');
@@ -70,9 +70,9 @@ class MetricasController extends Controller
             ->get();
 
         $topClientes = DB::table('reservas')
-            ->join('usuarios', 'reservas.usuario_id', '=', 'usuarios.id')
-            ->select('usuarios.nombre', DB::raw('COUNT(reservas.id) as total_reservas'))
-            ->groupBy('usuarios.nombre')
+            ->join('clientes', 'reservas.cliente_id', '=', 'clientes.id')
+            ->select('clientes.nombre', DB::raw('COUNT(reservas.id) as total_reservas'))
+            ->groupBy('clientes.nombre')
             ->orderByDesc('total_reservas')
             ->limit(5)
             ->get();

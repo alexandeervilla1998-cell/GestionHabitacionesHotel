@@ -26,7 +26,7 @@
                 <tr>
                     <td class="font-mono text-gray-500">#{{ $item->id }}</td>
                     <td class="font-semibold text-hotel-dark font-mono">#{{ $item->reserva_id }}</td>
-                    <td>{{ $item->reserva?->usuario?->nombre ?? 'N/A' }}</td>
+                    <td>{{ $item->reserva?->cliente?->nombre ?? 'N/A' }}</td>
                     <td class="font-semibold text-gray-900">{{ $item->servicio?->nombre ?? 'N/A' }}</td>
                     <td class="font-mono">{{ $item->cantidad }}</td>
                     <td>${{ number_format((float) $item->precio_unitario, 2) }}</td>

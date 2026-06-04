@@ -15,13 +15,13 @@ class FacturaController extends Controller
 
     public function index()
     {
-        $facturas = Factura::with(['reserva.usuario', 'pagos'])->orderBy('fecha_emision', 'desc')->get();
+        $facturas = Factura::with(['reserva.cliente', 'pagos'])->orderBy('fecha_emision', 'desc')->get();
         return view('facturas.index', compact('facturas'));
     }
 
     public function create()
     {
-        $reservas = Reserva::with(['usuario', 'detalleReservas', 'servicios'])
+        $reservas = Reserva::with(['cliente', 'detalleReservas', 'servicios'])
             ->where('estado', 'confirmada')
             ->where('activo', true)
             ->doesntHave('factura')

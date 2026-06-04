@@ -31,6 +31,19 @@ class AuthController extends Controller
         ];
 
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            
+            // Verificar que el usuario tenga un rol válido (admin o recepcionista)
+            if (!in_array($user->rol, ['admin', 'recepcionista'])) {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                
+                return back()->withErrors([
+                    'correo' => 'Solo administradores y recepcionistas pueden acceder al sistema.',
+                ])->withInput();
+            }
+            
             $request->session()->regenerate();
 
             return redirect()->intended(route('home.home'));

@@ -36,25 +36,14 @@
         @auth
         <nav class="border-t border-white/10 bg-hotel-dark/95">
             <div class="mx-auto flex max-w-7xl flex-wrap gap-1 px-4 py-2 sm:px-6 lg:px-8">
-                @if(Auth::user()->rol === 'admin')
-                    <a href="{{ route('metricas.index') }}" data-nav-link
-                       class="border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white">
-                        Métricas
-                    </a>
-                    <a href="{{ route('usuarios.index') }}" data-nav-link
-                       class="border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white">
-                        Usuarios
-                    </a>
-                @endif
-
                 @if(in_array(Auth::user()->rol, ['admin', 'recepcionista']))
-                    <a href="{{ route('facturas.index') }}" data-nav-link
+                    <a href="{{ route('clientes.index') }}" data-nav-link
                        class="border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white">
-                        Facturas
+                        Clientes
                     </a>
-                    <a href="{{ route('pagos.index') }}" data-nav-link
+                    <a href="{{ route('finanzas.index') }}" data-nav-link
                        class="border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white">
-                        Pagos
+                        Finanzas
                     </a>
                     <a href="{{ route('reservas.index') }}" data-nav-link
                        class="border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white">
@@ -75,6 +64,13 @@
                     <a href="{{ route('servicios.index') }}" data-nav-link
                        class="border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white">
                         Servicios
+                    </a>
+                @endif
+
+                @if(Auth::user()->rol === 'admin')
+                    <a href="{{ route('usuarios.index') }}" data-nav-link
+                       class="border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white">
+                        Usuarios
                     </a>
                 @endif
             </div>

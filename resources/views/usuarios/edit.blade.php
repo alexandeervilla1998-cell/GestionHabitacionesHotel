@@ -28,9 +28,8 @@
         <div>
             <label class="hotel-label" for="rol">Rol</label>
             <select name="rol" id="rol" class="hotel-select" required>
-                <option value="admin" @selected($usuario->rol === 'admin')>Admin</option>
-                <option value="cliente" @selected($usuario->rol === 'cliente')>Cliente</option>
-                <option value="recepcionista" @selected($usuario->rol === 'recepcionista')>Recepcionista</option>
+                <option value="admin" @selected($usuario->rol === 'admin')">Admin</option>
+                <option value="recepcionista" @selected($usuario->rol === 'recepcionista')">Recepcionista</option>
             </select>
         </div>
         <div class="flex items-center gap-2 border-2 border-gray-200 bg-gray-50 px-4 py-3">

@@ -55,7 +55,7 @@ class UsuarioController extends Controller
             'nombre' => 'required|string|max:100',
             'correo' => 'required|email|max:150|unique:usuarios,correo',
             'password' => self::PASSWORD_RULES,
-            'rol' => ['required', Rule::in(['admin', 'cliente', 'recepcionista'])],
+            'rol' => ['required', Rule::in(['admin', 'recepcionista'])],
             'activo' => 'nullable|boolean',
         ], [
             'password.regex' => 'La contraseña debe incluir letras y números (ejemplo: abc123).',
@@ -104,7 +104,7 @@ class UsuarioController extends Controller
         $rules = [
             'nombre' => 'required|string|max:100',
             'correo' => ['required', 'email', 'max:150', Rule::unique('usuarios', 'correo')->ignore($usuario->id)],
-            'rol' => ['required', Rule::in(['admin', 'cliente', 'recepcionista'])],
+            'rol' => ['required', Rule::in(['admin', 'recepcionista'])],
             'activo' => 'nullable|boolean',
         ];
 

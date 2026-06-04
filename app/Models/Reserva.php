@@ -15,7 +15,7 @@ class Reserva extends Model
     const UPDATED_AT = 'actualizado_en';
 
     protected $fillable = [
-        'usuario_id',
+        'cliente_id',
         'fecha_entrada',
         'fecha_salida',
         'estado',
@@ -34,9 +34,9 @@ class Reserva extends Model
         'deleted_at' => 'datetime',
     ];
 
-    public function usuario()
+    public function cliente()
     {
-        return $this->belongsTo(Usuario::class, 'usuario_id');
+        return $this->belongsTo(Cliente::class, 'cliente_id');
     }
 
     public function detalleReservas()
@@ -91,8 +91,8 @@ class Reserva extends Model
         return $query->where('estado', 'confirmada');
     }
 
-    public function scopePorUsuario($query, $usuarioId)
+    public function scopePorCliente($query, $clienteId)
     {
-        return $query->where('usuario_id', $usuarioId);
+        return $query->where('cliente_id', $clienteId);
     }
 }

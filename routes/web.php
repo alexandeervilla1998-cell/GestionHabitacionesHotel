@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\ClienteController;
 use App\Http\Controllers\Web\DetalleReservaController;
 use App\Http\Controllers\Web\FacturaController;
+use App\Http\Controllers\Web\FinanzasController;
 use App\Http\Controllers\Web\HabitacionController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\MetricasController;
@@ -26,6 +28,13 @@ Route::middleware('auth')->group(function () {
 
     // Admin + Recepcionista
     Route::middleware('rol:admin,recepcionista')->group(function () {
+        Route::get('/clientes',                   [ClienteController::class, 'index'])->name('clientes.index');
+        Route::get('/clientes/create',            [ClienteController::class, 'create'])->name('clientes.create');
+        Route::post('/clientes/store',            [ClienteController::class, 'store'])->name('clientes.store');
+        Route::get('/clientes/edit/{id}',         [ClienteController::class, 'edit'])->name('clientes.edit');
+        Route::put('/clientes/update/{id}',       [ClienteController::class, 'update'])->name('clientes.update');
+        Route::delete('/clientes/destroy/{id}',   [ClienteController::class, 'destroy'])->name('clientes.destroy');
+
         Route::get('/habitaciones/verificar-numero', [HabitacionController::class, 'verificarNumero'])->name('habitaciones.verificar-numero');
         Route::get('/habitaciones',               [HabitacionController::class, 'index'])->name('habitaciones.index');
         Route::get('/habitaciones/create',        [HabitacionController::class, 'create'])->name('habitaciones.create');
@@ -52,6 +61,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/detalle_reserva',            [DetalleReservaController::class, 'index'])->name('detalle_reserva.index');
         Route::get('/reserva_servicio',           [ReservaServicioController::class, 'index'])->name('reserva_servicio.index');
+
+        Route::get('/finanzas',                   [FinanzasController::class, 'index'])->name('finanzas.index');
 
         Route::get('/facturas',                   [FacturaController::class, 'index'])->name('facturas.index');
         Route::get('/facturas/create',            [FacturaController::class, 'create'])->name('facturas.create');

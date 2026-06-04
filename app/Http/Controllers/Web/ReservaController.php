@@ -8,7 +8,7 @@ use App\Models\Habitacion;
 use App\Models\Reserva;
 use App\Models\ReservaServicio;
 use App\Models\Servicio;
-use App\Models\Usuario;
+use App\Models\Cliente;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class ReservaController extends Controller
 {
     public function index()
     {
-        $reservas = Reserva::with(['usuario', 'detalleReservas.habitacion', 'servicios', 'factura'])
+        $reservas = Reserva::with(['cliente', 'detalleReservas.habitacion', 'servicios', 'factura'])
             ->where('activo', true)
             ->orderBy('creado_en', 'desc')
             ->get();
@@ -29,17 +29,17 @@ class ReservaController extends Controller
 
     public function create()
     {
-        $usuarios     = Usuario::where('rol', 'cliente')->where('activo', true)->orderBy('nombre')->get();
+        $clientes     = Cliente::where('activo', true)->orderBy('nombre')->get();
         $habitaciones = Habitacion::where('activo', true)->orderBy('numero')->get();
         $servicios    = Servicio::where('activo', true)->orderBy('nombre')->get();
 
-        return view('reservas.create', compact('usuarios', 'habitaciones', 'servicios'));
+        return view('reservas.create', compact('clientes', 'habitaciones', 'servicios'));
     }
 
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'usuario_id'    => 'required|exists:usuarios,id',
+            'cliente_id'    => 'required|exists:clientes,id',
             'fecha_entrada' => 'required|date',
             'fecha_salida'  => 'required|date|after:fecha_entrada',
             'habitacion_id' => 'required|exists:habitaciones,id',
@@ -71,7 +71,7 @@ class ReservaController extends Controller
                 }
 
                 $reserva = Reserva::create([
-                    'usuario_id'    => $validatedData['usuario_id'],
+                    'cliente_id'    => $validatedData['cliente_id'],
                     'fecha_entrada' => $validatedData['fecha_entrada'],
                     'fecha_salida'  => $validatedData['fecha_salida'],
                     'estado'        => 'pendiente',
@@ -105,7 +105,7 @@ class ReservaController extends Controller
                 return redirect()->route('reservas.index')->with('error', 'Registro no encontrado.');
             }
 
-            $usuarios     = Usuario::where('rol', 'cliente')->where('activo', true)->orderBy('nombre')->get();
+            $clientes     = Cliente::where('activo', true)->orderBy('nombre')->get();
             $habitaciones = Habitacion::where('activo', true)->orderBy('numero')->get();
             $servicios    = Servicio::where('activo', true)->orderBy('nombre')->get();
             $detalle      = $reserva->detalleReservas->first();
@@ -117,7 +117,7 @@ class ReservaController extends Controller
                 'subtotal'    => (float) $s->pivot->subtotal,
             ])->values();
 
-            return view('reservas.edit', compact('reserva', 'usuarios', 'habitaciones', 'servicios', 'detalle', 'serviciosReserva'));
+            return view('reservas.edit', compact('reserva', 'clientes', 'habitaciones', 'servicios', 'detalle', 'serviciosReserva'));
         } catch (Exception $ex) {
             return redirect()->back()->with('error', 'Error al buscar el registro.');
         }
@@ -132,7 +132,7 @@ class ReservaController extends Controller
         }
 
         $validatedData = $request->validate([
-            'usuario_id'    => 'required|exists:usuarios,id',
+            'cliente_id'    => 'required|exists:clientes,id',
             'fecha_entrada' => 'required|date',
             'fecha_salida'  => 'required|date|after:fecha_entrada',
             'habitacion_id' => 'required|exists:habitaciones,id',
@@ -171,7 +171,7 @@ class ReservaController extends Controller
                     return redirect()->back()->withInput()->with('error', 'La habitacion esta ocupada en las fechas solicitadas.');
                 }
 
-                $reserva->usuario_id    = $validatedData['usuario_id'];
+                $reserva->cliente_id    = $validatedData['cliente_id'];
                 $reserva->fecha_entrada = $validatedData['fecha_entrada'];
                 $reserva->fecha_salida  = $validatedData['fecha_salida'];
                 $reserva->estado        = $validatedData['estado'];

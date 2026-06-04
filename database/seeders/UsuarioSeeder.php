@@ -30,24 +30,6 @@ class UsuarioSeeder extends Seeder
                 'actualizado_en' => now()
             ],
             [
-                'nombre' => 'Juan Pérez',
-                'correo' => 'juan.perez@example.com',
-                'password' => Hash::make('password123'),
-                'rol' => 'cliente',
-                'activo' => true,
-                'creado_en' => now(),
-                'actualizado_en' => now()
-            ],
-            [
-                'nombre' => 'Ana Martínez',
-                'correo' => 'ana.martinez@example.com',
-                'password' => Hash::make('password123'),
-                'rol' => 'cliente',
-                'activo' => true,
-                'creado_en' => now(),
-                'actualizado_en' => now()
-            ],
-            [
                 'nombre' => 'Luis Sánchez',
                 'correo' => 'luis.sanchez@example.com',
                 'password' => Hash::make('password123'),
@@ -62,6 +44,6 @@ class UsuarioSeeder extends Seeder
             Usuario::create($usuario);
         }
 
-        $this->command->info('5 usuarios creados exitosamente');
+        $this->command->info('3 usuarios creados exitosamente (1 admin, 2 recepcionistas)');
     }
 }

@@ -9,7 +9,7 @@ class DetalleReservaController extends Controller
 {
     public function index()
     {
-        $detalles = DetalleReserva::with(['reserva.usuario', 'habitacion'])->get();
+        $detalles = DetalleReserva::with(['reserva.cliente', 'habitacion'])->get();
         return view('detalle_reserva.index', compact('detalles'));
     }
 }

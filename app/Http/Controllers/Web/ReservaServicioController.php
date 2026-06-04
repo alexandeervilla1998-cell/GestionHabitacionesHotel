@@ -9,7 +9,7 @@ class ReservaServicioController extends Controller
 {
     public function index()
     {
-        $reservaServicios = ReservaServicio::with(['reserva.usuario', 'servicio'])->get();
+        $reservaServicios = ReservaServicio::with(['reserva.cliente', 'servicio'])->get();
         return view('reserva_servicio.index', compact('reservaServicios'));
     }
 }
