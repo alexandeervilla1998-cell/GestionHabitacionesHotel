@@ -58,6 +58,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/reservas/destroy/{id}',   [ReservaController::class, 'destroy'])->name('reservas.destroy');
         Route::post('/reservas/confirmar/{id}',   [ReservaController::class, 'confirmar'])->name('reservas.confirmar');
         Route::post('/reservas/cancelar/{id}',    [ReservaController::class, 'cancelar'])->name('reservas.cancelar');
+        Route::post('/reservas/completar/{id}',   [ReservaController::class, 'completar'])->name('reservas.completar');
 
         Route::get('/detalle_reserva',            [DetalleReservaController::class, 'index'])->name('detalle_reserva.index');
         Route::get('/reserva_servicio',           [ReservaServicioController::class, 'index'])->name('reserva_servicio.index');
@@ -78,6 +79,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/pagos/procesar/{id}',       [PagoController::class, 'procesar'])->name('pagos.procesar');
         Route::post('/pagos/cancelar/{id}',       [PagoController::class, 'cancelar'])->name('pagos.cancelar');
         Route::post('/pagos/reembolsar/{id}',     [PagoController::class, 'reembolsar'])->name('pagos.reembolsar');
+        Route::post('/pagos/pagar-reserva/{id}',  [PagoController::class, 'pagarReserva'])->name('pagos.pagar-reserva');
     });
 
     // Solo Admin

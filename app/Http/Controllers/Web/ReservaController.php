@@ -9,6 +9,7 @@ use App\Models\Reserva;
 use App\Models\ReservaServicio;
 use App\Models\Servicio;
 use App\Models\Cliente;
+use App\Services\ReservaService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -17,6 +18,13 @@ use Illuminate\Validation\ValidationException;
 
 class ReservaController extends Controller
 {
+    protected $reservaService;
+
+    public function __construct(ReservaService $reservaService)
+    {
+        $this->reservaService = $reservaService;
+    }
+
     public function index()
     {
         $reservas = Reserva::with(['cliente', 'detalleReservas.habitacion', 'servicios', 'factura'])
@@ -285,6 +293,23 @@ class ReservaController extends Controller
             return redirect()->route('reservas.index')->with('success', 'Reserva cancelada exitosamente.');
         } catch (Exception $ex) {
             return redirect()->back()->with('error', 'Error al cancelar la reserva.');
+        }
+    }
+
+    public function completar(string $id)
+    {
+        try {
+            $reserva = Reserva::find($id);
+
+            if ($reserva == null) {
+                return redirect()->back()->with('error', 'Registro no encontrado.');
+            }
+
+            $this->reservaService->completarReserva($reserva);
+
+            return redirect()->route('reservas.index')->with('success', 'Reserva completada y habitaciones liberadas exitosamente.');
+        } catch (Exception $ex) {
+            return redirect()->back()->with('error', 'Error al completar la reserva: ' . $ex->getMessage());
         }
     }
 

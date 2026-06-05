@@ -5,11 +5,19 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Factura;
 use App\Models\Pago;
+use App\Services\ReservaService;
 use Exception;
 use Illuminate\Http\Request;
 
 class PagoController extends Controller
 {
+    protected $reservaService;
+
+    public function __construct(ReservaService $reservaService)
+    {
+        $this->reservaService = $reservaService;
+    }
+
     public function index()
     {
         $pagos = Pago::with('factura')->orderBy('creado_en', 'desc')->get();
@@ -125,7 +133,25 @@ class PagoController extends Controller
 
     public function procesar(string $id)
     {
-        return $this->cambiarEstado($id, 'completado', 'Pago procesado exitosamente.');
+        try {
+            $pago = Pago::with('factura.reserva')->find($id);
+
+            if ($pago == null) {
+                return redirect()->route('pagos.index')->with('error', 'Registro no encontrado.');
+            }
+
+            $pago->estado_pago = 'completado';
+            $pago->save();
+
+            // Auto-confirm reservation if invoice is fully paid
+            if ($pago->factura && $pago->factura->estaPagada()) {
+                $this->reservaService->verificarPagoYConfirmarReserva($pago->factura->reserva);
+            }
+
+            return redirect()->route('pagos.index')->with('success', 'Pago procesado exitosamente.');
+        } catch (Exception $ex) {
+            return redirect()->back()->with('error', 'Error al procesar el pago.');
+        }
     }
 
     public function cancelar(string $id)
@@ -163,5 +189,39 @@ class PagoController extends Controller
             'tarjeta_debito' => 'tarjeta_débito',
             default => $metodoPago,
         };
+    }
+
+    public function pagarReserva(string $reservaId)
+    {
+        try {
+            $reserva = \App\Models\Reserva::with('factura')->findOrFail($reservaId);
+
+            if ($reserva->estado !== 'pendiente') {
+                return redirect()->back()->with('error', 'Solo se pueden pagar reservas en estado pendiente.');
+            }
+
+            // Generate invoice if it doesn't exist
+            if (!$reserva->factura) {
+                $factura = $this->reservaService->generarFactura($reserva);
+            } else {
+                $factura = $reserva->factura;
+            }
+
+            // Create payment for the full amount
+            $pago = Pago::create([
+                'factura_id' => $factura->id,
+                'monto' => $factura->total,
+                'metodo_pago' => 'efectivo',
+                'estado_pago' => 'completado',
+                'creado_en' => now(),
+            ]);
+
+            // Auto-confirm reservation
+            $this->reservaService->verificarPagoYConfirmarReserva($reserva);
+
+            return redirect()->route('reservas.index')->with('success', 'Reserva pagada y confirmada exitosamente.');
+        } catch (Exception $ex) {
+            return redirect()->back()->with('error', 'Error al procesar el pago: ' . $ex->getMessage());
+        }
     }
 }

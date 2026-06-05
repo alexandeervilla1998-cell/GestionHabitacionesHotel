@@ -50,9 +50,16 @@
                                     Editar
                                 </a>
                                 @if($reserva->estado === 'pendiente')
-                                    <form action="{{ route('reservas.confirmar', $reserva->id) }}" method="POST" class="inline">
+                                    <form action="{{ route('pagos.pagar-reserva', $reserva->id) }}" method="POST" class="inline">
                                         @csrf
                                         <button type="submit" class="hotel-btn hotel-btn-primary">
+                                            <i data-lucide="credit-card"></i>
+                                            Pagar
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('reservas.confirmar', $reserva->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        <button type="submit" class="hotel-btn hotel-btn-secondary">
                                             <i data-lucide="check"></i>
                                             Confirmar
                                         </button>
@@ -64,6 +71,15 @@
                                         <button type="submit" class="hotel-btn hotel-btn-secondary text-red-700 border-red-200 hover:bg-red-50">
                                             <i data-lucide="x"></i>
                                             Cancelar
+                                        </button>
+                                    </form>
+                                @endif
+                                @if($reserva->estado === 'confirmada')
+                                    <form action="{{ route('reservas.completar', $reserva->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        <button type="submit" class="hotel-btn hotel-btn-primary">
+                                            <i data-lucide="check-circle"></i>
+                                            Completar
                                         </button>
                                     </form>
                                 @endif

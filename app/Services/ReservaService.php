@@ -184,6 +184,9 @@ class ReservaService
                 $detalle->habitacion->update(['estado' => 'ocupada']);
             }
 
+            // Generate invoice automatically
+            $this->generarFactura($reserva);
+
             return $reserva;
         });
     }
@@ -289,6 +292,49 @@ class ReservaService
             ]);
 
             return $factura;
+        });
+    }
+
+    /**
+     * Verify payment and auto-confirm reservation
+     */
+    public function verificarPagoYConfirmarReserva(Reserva $reserva): Reserva
+    {
+        // Only process pending reservations
+        if ($reserva->estado !== 'pendiente') {
+            return $reserva;
+        }
+
+        // Check if invoice exists and is paid
+        if (!$reserva->factura) {
+            return $reserva;
+        }
+
+        if ($reserva->factura->estaPagada()) {
+            return $this->confirmarReserva($reserva);
+        }
+
+        return $reserva;
+    }
+
+    /**
+     * Complete reservation and free rooms
+     */
+    public function completarReserva(Reserva $reserva): Reserva
+    {
+        if ($reserva->estado !== 'confirmada') {
+            throw new \Exception('Solo se pueden completar reservas en estado confirmada');
+        }
+
+        return DB::transaction(function () use ($reserva) {
+            $reserva->update(['estado' => 'completada']);
+
+            // Free rooms
+            foreach ($reserva->detalleReservas as $detalle) {
+                $detalle->habitacion->update(['estado' => 'disponible']);
+            }
+
+            return $reserva;
         });
     }
 }
