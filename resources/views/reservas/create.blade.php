@@ -90,7 +90,7 @@
             estado.className = 'block font-semibold text-red-700';
         } else {
             estado.textContent = 'Estadía: ' + noches + ' noche(s) calculada(s).';
-            estado.className = 'block font-semibold text-emerald-700';
+            estado.className = 'block font-semibold text-cyan-700';
         }
     }
 

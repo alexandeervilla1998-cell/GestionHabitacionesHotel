@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/habitaciones/edit/{id}',     [HabitacionController::class, 'edit'])->name('habitaciones.edit');
         Route::put('/habitaciones/update/{id}',   [HabitacionController::class, 'update'])->name('habitaciones.update');
         Route::delete('/habitaciones/destroy/{id}',[HabitacionController::class, 'destroy'])->name('habitaciones.destroy');
+        Route::post('/habitaciones/mantenimiento/{id}', [HabitacionController::class, 'mantenimiento'])->name('habitaciones.mantenimiento');
+        Route::post('/habitaciones/sacar-mantenimiento/{id}', [HabitacionController::class, 'sacarMantenimiento'])->name('habitaciones.sacar-mantenimiento');
 
         Route::get('/servicios',                  [ServicioController::class, 'index'])->name('servicios.index');
         Route::get('/servicios/create',           [ServicioController::class, 'create'])->name('servicios.create');

@@ -4,10 +4,10 @@
     @include('partials.head')
 </head>
 <body class="min-h-screen bg-gray-55 font-sans text-gray-800 antialiased flex flex-col">
-    <header class="border-b-2 border-hotel-mid bg-hotel-dark text-white shadow-md">
+    <header class="border-b-2 border-hotel-mid bg-hotel-dark text-white shadow-md animate-hotel-fade">
         <div class="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
             <a href="{{ route('home.home') }}" class="group flex items-center gap-3 no-underline">
-                <div class="flex h-11 w-11 items-center justify-center border-2 border-hotel-light bg-white transition-transform duration-200 group-hover:scale-105 overflow-hidden">
+                <div class="flex h-11 w-11 items-center justify-center rounded-lg border-2 border-hotel-light bg-white transition-all duration-200 group-hover:scale-105 group-hover:shadow-[0_0_0_4px_rgba(99,102,241,0.25)] overflow-hidden">
                     <img src="{{ asset('uploads/habitaciones/loscracks.png') }}" alt="Logo" class="h-full w-full object-cover">
                 </div>
                 <div>
@@ -38,38 +38,38 @@
             <div class="mx-auto flex max-w-7xl flex-wrap gap-1 px-4 py-2 sm:px-6 lg:px-8">
                 @if(in_array(Auth::user()->rol, ['admin', 'recepcionista']))
                     <a href="{{ route('clientes.index') }}" data-nav-link
-                       class="border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white">
+                       class="rounded-md border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-all duration-200 hover:border-white/20 hover:bg-white/5 hover:text-white hover:-translate-y-0.5">
                         Clientes
                     </a>
                     <a href="{{ route('finanzas.index') }}" data-nav-link
-                       class="border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white">
+                       class="rounded-md border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-all duration-200 hover:border-white/20 hover:bg-white/5 hover:text-white hover:-translate-y-0.5">
                         Finanzas
                     </a>
                     <a href="{{ route('reservas.index') }}" data-nav-link
-                       class="border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white">
+                       class="rounded-md border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-all duration-200 hover:border-white/20 hover:bg-white/5 hover:text-white hover:-translate-y-0.5">
                         Reservas
                     </a>
                     <a href="{{ route('detalle_reserva.index') }}" data-nav-link
-                       class="border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white">
+                       class="rounded-md border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-all duration-200 hover:border-white/20 hover:bg-white/5 hover:text-white hover:-translate-y-0.5">
                         Detalles Reservas
                     </a>
                     <a href="{{ route('reserva_servicio.index') }}" data-nav-link
-                       class="border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white">
+                       class="rounded-md border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-all duration-200 hover:border-white/20 hover:bg-white/5 hover:text-white hover:-translate-y-0.5">
                         Servicios Reservas
                     </a>
                     <a href="{{ route('habitaciones.index') }}" data-nav-link
-                       class="border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white">
+                       class="rounded-md border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-all duration-200 hover:border-white/20 hover:bg-white/5 hover:text-white hover:-translate-y-0.5">
                         Habitaciones
                     </a>
                     <a href="{{ route('servicios.index') }}" data-nav-link
-                       class="border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white">
+                       class="rounded-md border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-all duration-200 hover:border-white/20 hover:bg-white/5 hover:text-white hover:-translate-y-0.5">
                         Servicios
                     </a>
                 @endif
 
                 @if(Auth::user()->rol === 'admin')
                     <a href="{{ route('usuarios.index') }}" data-nav-link
-                       class="border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white">
+                       class="rounded-md border-2 border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-gray-300 transition-all duration-200 hover:border-white/20 hover:bg-white/5 hover:text-white hover:-translate-y-0.5">
                         Usuarios
                     </a>
                 @endif
@@ -78,7 +78,7 @@
         @endauth
     </header>
 
-    <main class="flex-grow mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <main class="flex-grow mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 animate-hotel-slide">
         @include('partials.alerts')
         @yield('content')
     </main>

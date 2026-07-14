@@ -68,7 +68,7 @@
                 estado.className = 'mb-1 block text-sm font-semibold text-red-700';
             } else {
                 estado.textContent = 'Número disponible.';
-                estado.className = 'mb-1 block text-sm font-semibold text-emerald-700';
+                estado.className = 'mb-1 block text-sm font-semibold text-cyan-700';
             }
         } catch (_) {
             estado.textContent = '';

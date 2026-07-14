@@ -36,8 +36,8 @@
                     <td class="font-mono">${{ number_format((float) $factura->subtotal, 2) }}</td>
                     <td class="font-mono">${{ number_format((float) $factura->impuestos, 2) }}</td>
                     <td class="font-bold text-hotel-dark font-mono">${{ number_format((float) $factura->total, 2) }}</td>
-                    <td class="font-mono text-emerald-700 font-semibold">${{ number_format((float) $factura->total_pagado, 2) }}</td>
-                    <td class="font-mono font-semibold {{ $factura->saldo_pendiente > 0 ? 'text-red-600' : 'text-emerald-600' }}">
+                    <td class="font-mono text-cyan-700 font-semibold">${{ number_format((float) $factura->total_pagado, 2) }}</td>
+                    <td class="font-mono font-semibold {{ $factura->saldo_pendiente > 0 ? 'text-red-600' : 'text-cyan-600' }}">
                         ${{ number_format((float) $factura->saldo_pendiente, 2) }}
                     </td>
                     <td>

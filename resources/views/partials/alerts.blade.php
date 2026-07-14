@@ -1,7 +1,7 @@
 @if(session('success'))
-    <div data-alert class="mb-6 flex items-start justify-between gap-4 border-2 border-emerald-700 bg-emerald-50 px-4 py-3 text-emerald-900 animate-hotel-slide" role="alert">
+    <div data-alert class="mb-6 flex items-start justify-between gap-4 border-2 border-cyan-700 bg-cyan-50 px-4 py-3 text-cyan-900 animate-hotel-slide" role="alert">
         <p class="font-medium">{{ session('success') }}</p>
-        <button type="button" data-dismiss-alert class="text-emerald-800 hover:text-emerald-950 text-lg leading-none" aria-label="Cerrar">&times;</button>
+        <button type="button" data-dismiss-alert class="text-cyan-800 hover:text-cyan-950 text-lg leading-none" aria-label="Cerrar">&times;</button>
     </div>
 @endif
 

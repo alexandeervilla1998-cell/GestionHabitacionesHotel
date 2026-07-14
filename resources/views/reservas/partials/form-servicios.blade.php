@@ -59,7 +59,7 @@
         </div>
         <div class="flex items-center sm:justify-end gap-3">
             <span class="text-sm uppercase tracking-widest text-hotel-muted font-bold">Total estimado:</span>
-            <span class="text-2xl font-bold font-mono text-emerald-400">$<span id="prev-total">0.00</span></span>
+            <span class="text-2xl font-bold font-mono text-cyan-400">$<span id="prev-total">0.00</span></span>
         </div>
     </div>
 </div>

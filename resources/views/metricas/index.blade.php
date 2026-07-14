@@ -17,7 +17,7 @@
             {{ $reservasConfirmadas }} confirmadas · {{ $reservasPendientes }} pendientes · {{ $reservasCanceladas }} canceladas
         </p>
     </div>
-    <div class="hotel-card animate-hotel-slide stagger-2 border-t-4 border-t-emerald-600 p-5">
+    <div class="hotel-card animate-hotel-slide stagger-2 border-t-4 border-t-cyan-600 p-5">
         <p class="text-xs font-semibold uppercase tracking-widest text-gray-500">Tasa de ocupación</p>
         <p class="mt-2 text-3xl font-bold text-hotel-dark">{{ $tasaOcupacion }}%</p>
         <p class="mt-2 text-xs text-gray-600">{{ $habitacionesOcupadas }} / {{ $totalHabitaciones }} habitaciones</p>

@@ -65,8 +65,8 @@
                             <td class="font-mono">${{ number_format((float) $factura->subtotal, 2) }}</td>
                             <td class="font-mono">${{ number_format((float) $factura->impuestos, 2) }}</td>
                             <td class="font-bold text-hotel-dark font-mono">${{ number_format((float) $factura->total, 2) }}</td>
-                            <td class="font-mono text-emerald-700 font-semibold">${{ number_format((float) $factura->total_pagado, 2) }}</td>
-                            <td class="font-mono font-semibold {{ $factura->saldo_pendiente > 0 ? 'text-red-600' : 'text-emerald-600' }}">
+                            <td class="font-mono text-cyan-700 font-semibold">${{ number_format((float) $factura->total_pagado, 2) }}</td>
+                            <td class="font-mono font-semibold {{ $factura->saldo_pendiente > 0 ? 'text-red-600' : 'text-cyan-600' }}">
                                 ${{ number_format((float) $factura->saldo_pendiente, 2) }}
                             </td>
                             <td>
@@ -223,7 +223,7 @@
                         {{ $reservasConfirmadas }} confirmadas · {{ $reservasPendientes }} pendientes · {{ $reservasCanceladas }} canceladas
                     </p>
                 </div>
-                <div class="hotel-card animate-hotel-slide stagger-2 border-t-4 border-t-emerald-600 p-5">
+                <div class="hotel-card animate-hotel-slide stagger-2 border-t-4 border-t-cyan-600 p-5">
                     <p class="text-xs font-semibold uppercase tracking-widest text-gray-500">Tasa de ocupación</p>
                     <p class="mt-2 text-3xl font-bold text-hotel-dark">{{ $tasaOcupacion }}%</p>
                     <p class="mt-2 text-xs text-gray-600">{{ $habitacionesOcupadas }} / {{ $totalHabitaciones }} habitaciones</p>

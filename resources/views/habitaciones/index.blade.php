@@ -9,6 +9,26 @@
     'pageActions' => '<a href="' . route('habitaciones.create') . '" class="hotel-btn-primary"><i data-lucide="plus"></i> Nueva habitación</a>',
 ])
 
+<!-- Statistics Card -->
+<div class="mb-6 grid grid-cols-2 md:grid-cols-4 gap-4 animate-hotel-fade">
+    <div class="bg-white p-4 border-2 border-gray-200 rounded text-center">
+        <div class="text-2xl font-bold text-hotel-dark">{{ $estadisticas['total'] }}</div>
+        <div class="text-sm text-gray-600">Total Habitaciones</div>
+    </div>
+    <div class="bg-white p-4 border-2 border-cyan-200 rounded text-center">
+        <div class="text-2xl font-bold text-cyan-700">{{ $estadisticas['disponibles'] }}</div>
+        <div class="text-sm text-gray-600">Disponibles</div>
+    </div>
+    <div class="bg-white p-4 border-2 border-amber-200 rounded text-center">
+        <div class="text-2xl font-bold text-amber-700">{{ $estadisticas['ocupadas'] }}</div>
+        <div class="text-sm text-gray-600">Ocupadas</div>
+    </div>
+    <div class="bg-white p-4 border-2 border-red-200 rounded text-center">
+        <div class="text-2xl font-bold text-red-700">{{ $estadisticas['mantenimiento'] }}</div>
+        <div class="text-sm text-gray-600">Mantenimiento</div>
+    </div>
+</div>
+
 <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white p-4 border-2 border-gray-200 rounded animate-hotel-fade">
     <form action="{{ route('habitaciones.index') }}" method="GET" class="flex flex-col gap-3 w-full sm:flex-row sm:items-center">
         <!-- Search bar -->
@@ -52,6 +72,7 @@
                     <th>Tipo</th>
                     <th>Precio / noche</th>
                     <th>Estado</th>
+                    <th>Ocupación</th>
                     <th>Activo</th>
                     <th class="text-right">Opciones</th>
                 </tr>
@@ -86,6 +107,30 @@
                             <span class="{{ $estadoClass }}">{{ $habitacion->estado }}</span>
                         </td>
                         <td>
+                            @php
+                                $ocupacionColor = match($habitacion->estado) {
+                                    'disponible' => 'bg-cyan-500',
+                                    'ocupada' => 'bg-amber-500',
+                                    'mantenimiento' => 'bg-red-500',
+                                    default => 'bg-gray-500',
+                                };
+                            @endphp
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full {{ $ocupacionColor }}"></div>
+                                <span class="text-sm text-gray-600">
+                                    @if($habitacion->estado === 'ocupada')
+                                        Ocupada
+                                    @elseif($habitacion->estado === 'disponible')
+                                        Disponible
+                                    @elseif($habitacion->estado === 'mantenimiento')
+                                        En mantenimiento
+                                    @else
+                                        Desconocido
+                                    @endif
+                                </span>
+                            </div>
+                        </td>
+                        <td>
                             @if($habitacion->activo)
                                 <span class="hotel-badge-green">Sí</span>
                             @else
@@ -94,6 +139,23 @@
                         </td>
                         <td>
                             <div class="flex justify-end gap-2">
+                                @if($habitacion->estado === 'mantenimiento')
+                                    <form action="{{ route('habitaciones.sacar-mantenimiento', $habitacion->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="hotel-btn hotel-btn-primary" title="Habitación disponible">
+                                            <i data-lucide="check-circle"></i>
+                                            Disponible
+                                        </button>
+                                    </form>
+                                @elseif($habitacion->estado === 'disponible')
+                                    <form action="{{ route('habitaciones.mantenimiento', $habitacion->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="hotel-btn hotel-btn-secondary" title="Poner en mantenimiento">
+                                            <i data-lucide="wrench"></i>
+                                            Mantenimiento
+                                        </button>
+                                    </form>
+                                @endif
                                 <a href="{{ route('habitaciones.edit', $habitacion->id) }}" class="hotel-btn hotel-btn-secondary">
                                     <i data-lucide="pencil"></i>
                                     Editar
@@ -112,7 +174,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="py-12 text-center text-gray-500">
+                        <td colspan="9" class="py-12 text-center text-gray-500">
                             No hay habitaciones registradas.
                         </td>
                     </tr>

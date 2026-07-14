@@ -14,21 +14,26 @@
             extend: {
                 colors: {
                     hotel: {
-                        dark: '#0f2922',
-                        DEFAULT: '#1a3c34',
-                        mid: '#2d5a4e',
-                        light: '#3d8b7a',
-                        muted: '#5a9a8a',
+                        dark: '#0a0f2c',
+                        DEFAULT: '#141b4d',
+                        mid: '#2e3a8c',
+                        light: '#5b6ee1',
+                        muted: '#8f9bdb',
+                    },
+                    accent: {
+                        cyan: '#22d3ee',
+                        glow: '#6366f1',
                     },
                 },
                 fontFamily: {
                     sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
                 },
                 borderRadius: {
-                    DEFAULT: '2px',
-                    sm: '2px',
-                    md: '4px',
-                    lg: '4px',
+                    DEFAULT: '8px',
+                    sm: '6px',
+                    md: '10px',
+                    lg: '16px',
+                    xl: '20px',
                 },
             },
         },

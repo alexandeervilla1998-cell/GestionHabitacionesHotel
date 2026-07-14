@@ -4,12 +4,20 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Habitacion;
+use App\Services\HabitacionService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class HabitacionController extends Controller
 {
+    protected HabitacionService $habitacionService;
+
+    public function __construct(HabitacionService $habitacionService)
+    {
+        $this->habitacionService = $habitacionService;
+    }
+
     public function index(Request $request)
     {
         $buscar = $request->input('buscar');
@@ -32,8 +40,9 @@ class HabitacionController extends Controller
         }
 
         $habitaciones = $query->get();
+        $estadisticas = $this->habitacionService->obtenerEstadisticasOcupacion();
 
-        return view('habitaciones.index', compact('habitaciones', 'estado', 'buscar'));
+        return view('habitaciones.index', compact('habitaciones', 'estado', 'buscar', 'estadisticas'));
     }
 
     public function create()
@@ -168,6 +177,40 @@ class HabitacionController extends Controller
                 : redirect()->back()->with('error', 'Error al desactivar el registro.');
         } catch (Exception $ex) {
             return redirect()->back()->with('error', 'Error al desactivar el registro.');
+        }
+    }
+
+    public function mantenimiento(string $id)
+    {
+        try {
+            $habitacion = Habitacion::find($id);
+
+            if ($habitacion == null) {
+                return redirect()->route('habitaciones.index')->with('error', 'Registro no encontrado.');
+            }
+
+            $this->habitacionService->ponerMantenimiento($habitacion);
+
+            return redirect()->route('habitaciones.index')->with('success', 'Habitación puesta en mantenimiento exitosamente.');
+        } catch (Exception $ex) {
+            return redirect()->back()->with('error', 'Error al poner en mantenimiento: ' . $ex->getMessage());
+        }
+    }
+
+    public function sacarMantenimiento(string $id)
+    {
+        try {
+            $habitacion = Habitacion::find($id);
+
+            if ($habitacion == null) {
+                return redirect()->route('habitaciones.index')->with('error', 'Registro no encontrado.');
+            }
+
+            $this->habitacionService->sacarMantenimiento($habitacion);
+
+            return redirect()->route('habitaciones.index')->with('success', 'Habitación disponible nuevamente.');
+        } catch (Exception $ex) {
+            return redirect()->back()->with('error', 'Error al sacar de mantenimiento: ' . $ex->getMessage());
         }
     }
 }
